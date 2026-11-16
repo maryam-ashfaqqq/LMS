@@ -138,7 +138,11 @@ export const enrollmentStatusSchema = z.object({
 export const settingsSchema = z.object({
   site_name: z.string().trim().min(2).max(80),
   tagline: z.string().trim().max(180),
-  support_email: z.string().trim().email(),
+  support_email: z
+    .string()
+    .trim()
+    .max(255)
+    .refine((value) => value === '' || z.string().email().safeParse(value).success, 'Enter a valid email.'),
   allow_instructor_registration: z.enum(['true', 'false']),
   currency: z.string().trim().regex(/^[A-Z]{3}$/, 'Use a 3-letter currency code.'),
 });

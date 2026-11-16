@@ -30,7 +30,7 @@ describe('health', () => {
 });
 
 describe('api flows', () => {
-  const email = `test.${Date.now()}@oakline.test`;
+  const email = `test.${Date.now()}@example.com`;
   let token = '';
   let userId = '';
 

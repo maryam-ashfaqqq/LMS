@@ -120,9 +120,13 @@ export function SiteFooter() {
         </div>
         <div className="text-sm">
           <p className="font-medium text-white">Support</p>
-          <a className="mt-3 block text-paper/75" href={`mailto:${settings.support_email}`}>
-            {settings.support_email}
-          </a>
+          {settings.support_email ? (
+            <a className="mt-3 block text-paper/75" href={`mailto:${settings.support_email}`}>
+              {settings.support_email}
+            </a>
+          ) : (
+            <p className="mt-3 text-paper/75">Support email is not set yet.</p>
+          )}
         </div>
       </div>
     </footer>

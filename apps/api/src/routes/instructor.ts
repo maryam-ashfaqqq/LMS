@@ -12,6 +12,7 @@ import { currentUser, requireAuth, requireRole } from '../middleware/auth';
 import { asyncHandler, validateBody } from '../middleware/validate';
 import { courseWriteSchema, lessonSchema, moveSchema, sectionSchema } from '../schemas';
 import { buildCourseTree } from './catalog';
+import { removeCourse } from '../lib/remove';
 
 async function uniqueCourseSlug(title: string): Promise<string> {
   const base = slugify(title);
@@ -168,14 +169,7 @@ instructorRouter.delete(
   '/courses/:id',
   asyncHandler(async (req, res) => {
     const course = await ownedCourse(String(req.params.id), currentUser(req));
-    const enrolled = await query<RowDataPacket & { total: number }>(
-      `SELECT COUNT(*) AS total FROM enrollments WHERE course_id = :id AND status <> 'cancelled'`,
-      { id: course.id },
-    );
-    if (asNumber(enrolled[0]?.total) > 0) {
-      throw new HttpError(409, 'This course has enrollments and cannot be deleted.', 'COURSE_HAS_ENROLLMENTS');
-    }
-    await exec('DELETE FROM courses WHERE id = :id', { id: course.id });
+    await removeCourse(course.id);
     res.status(204).send();
   }),
 );

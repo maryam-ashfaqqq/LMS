@@ -1,8 +1,8 @@
--- Oakline LMS schema
--- The setup script drops and recreates the configured database, then runs this file.
--- Safe to run on an empty database. It does not contain passwords or card data.
+-- Oakline LMS schema.
+-- Applied to the live database named in DB_NAME. Tables are created only if they are missing.
+-- This file contains no accounts, courses, or other records.
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id CHAR(36) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE users (
   KEY idx_users_role (role)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE categories (
+CREATE TABLE IF NOT EXISTS categories (
   id CHAR(36) NOT NULL,
   name VARCHAR(120) NOT NULL,
   slug VARCHAR(140) NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE categories (
   UNIQUE KEY uq_categories_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE courses (
+CREATE TABLE IF NOT EXISTS courses (
   id CHAR(36) NOT NULL,
   instructor_id CHAR(36) NOT NULL,
   category_id CHAR(36) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE courses (
   CONSTRAINT chk_courses_free CHECK (is_free = 0 OR price = 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE sections (
+CREATE TABLE IF NOT EXISTS sections (
   id CHAR(36) NOT NULL,
   course_id CHAR(36) NOT NULL,
   title VARCHAR(180) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE sections (
   CONSTRAINT fk_sections_course FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE lessons (
+CREATE TABLE IF NOT EXISTS lessons (
   id CHAR(36) NOT NULL,
   section_id CHAR(36) NOT NULL,
   title VARCHAR(180) NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE lessons (
   CONSTRAINT chk_lessons_duration CHECK (duration_minutes >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE enrollments (
+CREATE TABLE IF NOT EXISTS enrollments (
   id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
   course_id CHAR(36) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE enrollments (
   CONSTRAINT fk_enrollments_course FOREIGN KEY (course_id) REFERENCES courses (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE lesson_progress (
+CREATE TABLE IF NOT EXISTS lesson_progress (
   id CHAR(36) NOT NULL,
   enrollment_id CHAR(36) NOT NULL,
   lesson_id CHAR(36) NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE lesson_progress (
   CONSTRAINT fk_progress_lesson FOREIGN KEY (lesson_id) REFERENCES lessons (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
   id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
   course_id CHAR(36) NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE reviews (
 
 -- Orders and payments store provider references and amounts only.
 -- Do not add card number, CVC, or expiry columns.
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
   id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
   course_id CHAR(36) NOT NULL,
@@ -160,7 +160,7 @@ CREATE TABLE orders (
   CONSTRAINT chk_orders_amount CHECK (amount >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
   id CHAR(36) NOT NULL,
   order_id CHAR(36) NOT NULL,
   provider VARCHAR(40) NOT NULL,
@@ -177,7 +177,7 @@ CREATE TABLE payments (
   CONSTRAINT chk_payments_amount CHECK (amount >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE certificates (
+CREATE TABLE IF NOT EXISTS certificates (
   id CHAR(36) NOT NULL,
   enrollment_id CHAR(36) NOT NULL,
   user_id CHAR(36) NOT NULL,
@@ -193,7 +193,7 @@ CREATE TABLE certificates (
   CONSTRAINT fk_certificates_course FOREIGN KEY (course_id) REFERENCES courses (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-CREATE TABLE platform_settings (
+CREATE TABLE IF NOT EXISTS platform_settings (
   setting_key VARCHAR(100) NOT NULL,
   setting_value TEXT NOT NULL,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -21,6 +21,7 @@ import {
   settingsSchema,
 } from '../schemas';
 import { activateEnrollment } from './learning';
+import { removeCourse, removeUser } from '../lib/remove';
 
 type UserRow = RowDataPacket & {
   id: string;
@@ -226,6 +227,14 @@ adminRouter.patch(
   }),
 );
 
+adminRouter.delete(
+  '/users/:id',
+  asyncHandler(async (req, res) => {
+    await removeUser(String(req.params.id), currentUser(req).id);
+    res.status(204).send();
+  }),
+);
+
 adminRouter.get(
   '/courses',
   asyncHandler(async (req, res) => {
@@ -270,6 +279,16 @@ adminRouter.post(
     if (!course) throw new HttpError(404, 'Course not found.', 'NOT_FOUND');
     await exec(`UPDATE courses SET status = 'draft', rejection_reason = NULL WHERE id = :id`, { id: course.id });
     res.json({ status: 'draft' });
+  }),
+);
+
+adminRouter.delete(
+  '/courses/:id',
+  asyncHandler(async (req, res) => {
+    const course = await findCourseById(String(req.params.id));
+    if (!course) throw new HttpError(404, 'Course not found.', 'NOT_FOUND');
+    await removeCourse(course.id);
+    res.status(204).send();
   }),
 );
 

@@ -7,7 +7,7 @@ import type { PublicSettings } from './types';
 const defaults: PublicSettings = {
   site_name: 'Oakline',
   tagline: 'Courses taught with the care of a studio.',
-  support_email: 'support@oakline.test',
+  support_email: '',
   allow_instructor_registration: 'true',
   currency: 'USD',
 };

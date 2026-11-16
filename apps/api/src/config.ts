@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 dotenv.config();
 
 function requiredInProduction(name: string, value: string | undefined, fallback: string): string {
@@ -29,7 +30,10 @@ export const config = {
     user: process.env.DB_USER?.trim() || 'root',
     password: process.env.DB_PASSWORD ?? '',
     database: dbName,
+    ssl: process.env.DB_SSL === 'true' ? { minVersion: 'TLSv1.2' as const } : undefined,
   },
+  adminEmail: process.env.ADMIN_EMAIL?.trim().toLowerCase() || '',
+  adminPassword: process.env.ADMIN_PASSWORD || '',
   stripeSecretKey: process.env.STRIPE_SECRET_KEY?.trim() || '',
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET?.trim() || '',
   uploadDir: path.resolve(process.cwd(), process.env.UPLOAD_DIR?.trim() || 'uploads'),

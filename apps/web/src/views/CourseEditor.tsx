@@ -218,7 +218,7 @@ export function CourseEditor({ id }: { id: string }) {
 
       <Panel>
         <h2 className="font-display text-2xl">Review</h2>
-        <p className="mt-2 text-sm text-muted">Submit when the course has at least one lesson. An admin publishes or rejects it. Courses with enrollments cannot be deleted.</p>
+        <p className="mt-2 text-sm text-muted">Submit when the course has at least one lesson. An admin publishes or rejects it. Deleting a course removes it and its enrollments from the live database.</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {course.status === 'draft' || course.status === 'rejected' ? (
             <button className={buttonClass('primary')} type="button" onClick={() => void run(() => api(`/api/instructor/courses/${course.id}/submit`, { method: 'POST', token }).then(() => undefined), 'Submitted for review.')}>Submit for review</button>

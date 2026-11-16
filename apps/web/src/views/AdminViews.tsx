@@ -136,7 +136,7 @@ export function AdminUsers() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-4xl">Users</h1>
-          <p className="mt-2 text-sm text-muted">Create accounts, change roles, and deactivate access. You cannot remove your own admin role.</p>
+          <p className="mt-2 text-sm text-muted">Create accounts, change roles, or delete them. Deleted accounts are removed from the live database. You cannot delete your own account.</p>
         </div>
         <button className={buttonClass('primary')} type="button" onClick={() => setOpen(true)}>New user</button>
       </div>
@@ -177,6 +177,12 @@ export function AdminUsers() {
               <button className={buttonClass(person.isActive ? 'danger' : 'primary', 'sm')} type="button" disabled={person.id === user?.id && person.isActive} onClick={() => void patch(person.id, { isActive: !person.isActive })}>
                 {person.isActive ? 'Deactivate' : 'Activate'}
               </button>
+              <button className={buttonClass('danger', 'sm')} type="button" disabled={person.id === user?.id} onClick={() => {
+                if (!token || !window.confirm(`Delete ${person.email}? This removes the account and its courses from the live database.`)) return;
+                void api(`/api/admin/users/${person.id}`, { method: 'DELETE', token })
+                  .then(() => { push('User deleted.'); reload(); })
+                  .catch((reason) => push(errorMessage(reason), 'error'));
+              }}>Delete</button>
             </div>
           </article>
         ))}
@@ -296,6 +302,12 @@ export function AdminCourses() {
               {course.status === 'published' ? (
                 <button className={buttonClass('secondary', 'sm')} type="button" onClick={() => void act(`/api/admin/courses/${course.id}/unpublish`, undefined, 'Course returned to draft.')}>Unpublish</button>
               ) : null}
+              <button className={buttonClass('danger', 'sm')} type="button" onClick={() => {
+                if (!token || !window.confirm(`Delete ${course.title}? This removes the course from the live database.`)) return;
+                void api(`/api/admin/courses/${course.id}`, { method: 'DELETE', token })
+                  .then(() => { push('Course deleted.'); load(); })
+                  .catch((reason) => push(errorMessage(reason), 'error'));
+              }}>Delete</button>
             </div>
           </article>
         ))}
@@ -572,7 +584,7 @@ export function AdminPayments() {
 const settingsSchema = z.object({
   site_name: z.string().trim().min(2).max(80),
   tagline: z.string().trim().max(180),
-  support_email: z.string().trim().email('Enter a valid email.'),
+  support_email: z.string().trim().max(255).refine((value) => value === '' || z.string().email().safeParse(value).success, 'Enter a valid email.'),
   allow_instructor_registration: z.enum(['true', 'false']),
   currency: z.string().trim().regex(/^[A-Z]{3}$/, 'Use a 3-letter currency code.'),
 });

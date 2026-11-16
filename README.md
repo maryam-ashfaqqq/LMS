@@ -5,7 +5,7 @@ Oakline is a learning management system with a public catalog, student learning,
 ## Requirements
 
 - Node.js 20 or newer
-- MySQL 8
+- A TiDB Cloud Serverless cluster (MySQL compatible)
 
 ## Install
 
@@ -22,46 +22,19 @@ copy apps\api\.env.example apps\api\.env
 copy apps\web\.env.example apps\web\.env.local
 ```
 
-`apps/api/.env` controls the API port, JWT secret, MySQL connection, upload directory, and Stripe sandbox keys. `apps/web/.env.local` sets `NEXT_PUBLIC_API_URL`, which must match the API origin. npm 11 ignores dependency install scripts until they are approved. This repo already allows the `bcrypt` and `esbuild` scripts in the root `package.json`.
+`apps/api/.env` controls the API port, JWT secret, TiDB Cloud connection, the first admin account, the upload directory, and Stripe sandbox keys. `apps/web/.env.local` sets `NEXT_PUBLIC_API_URL`, which must match the API origin. npm 11 ignores dependency install scripts until they are approved. This repo already allows the `bcrypt` and `esbuild` scripts in the root `package.json`.
 
 ## Database
 
-The setup script drops and recreates the database named in `DB_NAME`, applies `database/schema.sql`, and seeds demo data. `npm run db:seed` reloads demo data without dropping the schema. Seeding also writes `database/seed.sql`.
+The database lives on TiDB Cloud. This repository has the Next.js frontend and the Express API only. `apps/api/.env` holds `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`, and `DB_SSL=true`.
 
-Local MySQL on port 3306, using the account in `apps/api/.env`. The example file assumes `root` with an empty password. If MySQL rejects that login, set `DB_PASSWORD` (and `DB_USER` if needed) before setup:
+On startup the API connects to that cluster, creates the `oakline` database if it is missing, and creates tables that are not already there. It does not load sample users or courses. If `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set and that email is not already registered, the API creates that one admin account so you can sign in.
 
 ```bash
 npm run db:setup
 ```
 
-To use the included Docker MySQL instead, start it and point the API at port 3307:
-
-```bash
-docker compose up -d
-```
-
-Then set these values in `apps/api/.env` before `npm run db:setup`:
-
-```text
-DB_PORT=3307
-DB_PASSWORD=oakline-dev
-```
-
-The container root password is `oakline-dev`. The database name remains `oakline`.
-
-### Demo accounts
-
-These accounts exist only after seeding. They are not production credentials.
-
-| Role | Email | Password |
-| --- | --- | --- |
-| Admin | admin@oakline.test | Admin#Oakline2026 |
-| Instructor | ada@oakline.test | Teach#Oakline2026 |
-| Instructor | leo@oakline.test | Teach#Oakline2026 |
-| Student | maya@oakline.test | Learn#Oakline2026 |
-| Student | jonah@oakline.test | Learn#Oakline2026 |
-
-Maya is enrolled in the free SQL course. Jonah completed Writing Reports and has certificate `OL-JONAHWRITE`. Pricing Conversations is waiting for admin review. Available Light is still a draft.
+Creating or deleting a student, instructor, or course in the website writes or removes that row in TiDB. The catalog, enrollments, and certificates are read from the same database.
 
 ## Run
 

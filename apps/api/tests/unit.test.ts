@@ -16,7 +16,7 @@ describe('authentication primitives', () => {
   });
 
   it('signs and verifies a role-bearing token', () => {
-    const token = signToken({ id: '44444444-4444-4444-8444-444444444444', role: 'student', email: 'maya@oakline.test' });
+    const token = signToken({ id: '44444444-4444-4444-8444-444444444444', role: 'student', email: 'student@example.com' });
     const payload = verifyToken(token);
     expect(payload.sub).toBe('44444444-4444-4444-8444-444444444444');
     expect(payload.role).toBe('student');
@@ -51,7 +51,7 @@ describe('payments', () => {
         orderId: 'order',
         userId: 'user',
         courseId: 'course',
-        email: 'maya@oakline.test',
+        email: 'student@example.com',
         courseTitle: 'TypeScript at Work',
         courseSubtitle: '',
         amount: 79,

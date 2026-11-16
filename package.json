@@ -15,8 +15,7 @@
     "test": "npm run test -w @oakline/api",
     "typecheck": "npm run typecheck -w @oakline/api && npm run typecheck -w @oakline/web",
     "lint": "npm run lint -w @oakline/web",
-    "db:setup": "npm run db:setup -w @oakline/api",
-    "db:seed": "npm run db:seed -w @oakline/api"
+    "db:setup": "npm run db:setup -w @oakline/api"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
