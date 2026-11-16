@@ -11,14 +11,14 @@ html {
 }
 
 body {
-  background: #f3eee6;
-  color: #1c1916;
+  background: #F5EFE6;
+  color: #1A2E25;
   min-height: 100vh;
 }
 
 ::selection {
-  background: #d5ebe3;
-  color: #16382e;
+  background: #E7F0EB;
+  color: #1B4332;
 }
 
 input,

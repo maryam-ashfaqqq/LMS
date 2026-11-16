@@ -71,7 +71,7 @@ export function LearnView({ slug }: { slug: string }) {
         <p className="text-xs uppercase tracking-wide text-muted">Lessons</p>
         <h1 className="mt-1 font-display text-2xl leading-tight">{course.title}</h1>
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-paper">
-          <div className="h-full bg-pine" style={{ width: `${course.viewer?.progressPercent ?? 0}%` }} />
+          <div className="h-full bg-accent" style={{ width: `${course.viewer?.progressPercent ?? 0}%` }} />
         </div>
         <p className="mt-2 text-xs text-muted">{course.viewer?.progressPercent ?? 0}% complete</p>
         <div className="mt-4 space-y-4">
@@ -83,7 +83,7 @@ export function LearnView({ slug }: { slug: string }) {
                   <Link
                     key={lesson.id}
                     href={`/dashboard/student/learn/${slug}?lesson=${lesson.id}`}
-                    className={`block rounded-lg px-2 py-2 text-sm ${selected.id === lesson.id ? 'bg-pine text-white' : 'hover:bg-paper'}`}
+                    className={`block rounded-lg px-2 py-2 text-sm ${selected.id === lesson.id ? 'bg-accent text-white' : 'hover:bg-paper'}`}
                   >
                     <span className="block">{lesson.completed ? '✓ ' : ''}{lesson.title}</span>
                     <span className={`text-xs ${selected.id === lesson.id ? 'text-white/70' : 'text-muted'}`}>

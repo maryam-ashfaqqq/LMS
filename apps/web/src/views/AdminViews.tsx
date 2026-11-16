@@ -287,7 +287,7 @@ export function AdminCourses() {
               <div>
                 <p className="font-display text-2xl">{course.title}</p>
                 <p className="text-sm text-muted">{course.instructor.firstName} {course.instructor.lastName} · {course.category.name}</p>
-                {course.rejectionReason ? <p className="mt-2 text-sm text-clay-deep">{course.rejectionReason}</p> : null}
+                {course.rejectionReason ? <p className="mt-2 text-sm text-red-700">{course.rejectionReason}</p> : null}
               </div>
               <Badge tone={statusTone(course.status)}>{statusLabel(course.status)}</Badge>
             </div>

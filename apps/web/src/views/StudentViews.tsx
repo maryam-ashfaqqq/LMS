@@ -53,7 +53,7 @@ export function StudentHome() {
               </div>
               <p className="mt-1 text-sm text-muted">{row.course.instructorName} · {priceLabel(row.course, settings.currency)}</p>
               <div className="mt-3 h-2 overflow-hidden rounded-full bg-paper">
-                <div className="h-full bg-pine" style={{ width: `${Math.min(100, row.progressPercent)}%` }} />
+                <div className="h-full bg-accent" style={{ width: `${Math.min(100, row.progressPercent)}%` }} />
               </div>
               <p className="mt-2 text-xs text-muted">{row.completedLessons} of {row.totalLessons} lessons · {row.progressPercent}%</p>
               <Link href={`/dashboard/student/learn/${row.course.slug}`} className={`${buttonClass('primary', 'sm')} mt-4`}>
@@ -139,7 +139,7 @@ export function StudentOrders() {
     <div>
       <h1 className="font-display text-4xl text-ink">Orders</h1>
       <p className="mt-2 max-w-2xl text-sm text-muted">An order becomes paid only after the payment provider confirms it. Card numbers are never stored by Oakline.</p>
-      {notice ? <p className="mt-4 rounded-xl bg-pine-mist px-4 py-3 text-sm text-pine">{notice}</p> : null}
+      {notice ? <p className="mt-4 rounded-xl bg-accent-mist px-4 py-3 text-sm text-accent">{notice}</p> : null}
       {error ? <div className="mt-4"><ErrorNote message={error} /></div> : null}
       {!rows && !error ? <LoadingBlock /> : null}
       {rows && rows.length === 0 ? (

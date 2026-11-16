@@ -16,7 +16,7 @@ export function CourseArt({
     return <img src={url} alt="" className={`h-full w-full object-cover ${className}`} />;
   }
   return (
-    <div className={`flex h-full w-full items-end bg-[linear-gradient(150deg,#16382e_0%,#1f6a52_58%,#c45c32_140%)] p-4 ${className}`}>
+    <div className={`flex h-full w-full items-end bg-[linear-gradient(150deg,#102A1F_0%,#1B4332_58%,#2D6A4F_100%)] p-4 ${className}`}>
       <span className="font-display text-4xl text-white">{title.slice(0, 1).toUpperCase()}</span>
     </div>
   );
@@ -26,7 +26,7 @@ export function Stars({ value }: { value: number | null }) {
   const rating = value ?? 0;
   return (
     <span className="inline-flex items-center gap-1 text-sm text-ink-soft">
-      <Star className={`h-4 w-4 ${rating ? 'fill-clay text-clay' : 'text-line'}`} />
+      <Star className={`h-4 w-4 ${rating ? 'fill-accent text-accent' : 'text-line'}`} />
       {value == null ? 'New' : value.toFixed(1)}
     </span>
   );

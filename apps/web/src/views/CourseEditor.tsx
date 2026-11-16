@@ -83,7 +83,7 @@ export function CourseEditor({ id }: { id: string }) {
           <p className="text-sm text-muted">Slug · {course.slug}</p>
           <h1 className="font-display text-4xl text-ink">{course.title}</h1>
           <div className="mt-2"><Badge tone={statusTone(course.status)}>{course.status}</Badge></div>
-          {course.rejectionReason ? <p className="mt-3 max-w-2xl text-sm text-clay-deep">Review note: {course.rejectionReason}</p> : null}
+          {course.rejectionReason ? <p className="mt-3 max-w-2xl text-sm text-red-700">Review note: {course.rejectionReason}</p> : null}
         </div>
         <div className="flex flex-wrap gap-2">
           <Link className={buttonClass('secondary', 'sm')} href={`/dashboard/instructor/courses/${course.id}/students`}>Students</Link>

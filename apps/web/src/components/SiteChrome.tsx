@@ -19,7 +19,7 @@ export function ApiBanner() {
   const { status } = useSettings();
   if (status !== 'offline') return null;
   return (
-    <div className="bg-clay px-4 py-2 text-center text-sm text-white">
+    <div className="bg-pine-deep px-4 py-2 text-center text-sm text-paper">
       Oakline cannot reach the API. Start the backend, then refresh this page.
     </div>
   );
@@ -32,17 +32,17 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-paper/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-pine-deep">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <Link href="/" className="font-display text-2xl tracking-tight text-pine">
+        <Link href="/" className="font-display text-2xl tracking-tight text-paper">
           {settings.site_name}
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-ink-soft md:flex">
+        <nav className="hidden items-center gap-6 text-sm text-paper/80 md:flex">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={pathname.startsWith(link.href) ? 'text-ink' : 'hover:text-ink'}
+              className={pathname.startsWith(link.href) ? 'text-accent' : 'hover:text-paper'}
             >
               {link.label}
             </Link>
@@ -55,7 +55,7 @@ export function SiteHeader() {
             </Link>
           ) : (
             <>
-              <Link href="/login" className={buttonClass('ghost', 'sm')}>
+              <Link href="/login" className={buttonClass('ghost', 'sm', '!text-paper hover:!bg-white/10')}>
                 Sign in
               </Link>
               <Link href="/register" className={buttonClass('primary', 'sm')}>
@@ -64,15 +64,15 @@ export function SiteHeader() {
             </>
           )}
         </div>
-        <button type="button" className="md:hidden" aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen((value) => !value)}>
+        <button type="button" className="text-paper md:hidden" aria-label={open ? 'Close menu' : 'Open menu'} onClick={() => setOpen((value) => !value)}>
           {open ? <X /> : <Menu />}
         </button>
       </div>
       {open ? (
-        <div className="border-t border-line px-5 py-4 md:hidden">
-          <div className="flex flex-col gap-3 text-sm">
+        <div className="border-t border-white/10 px-5 py-4 md:hidden">
+          <div className="flex flex-col gap-3 text-sm text-paper">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
+              <Link key={link.href} href={link.href} onClick={() => setOpen(false)} className={pathname.startsWith(link.href) ? 'text-accent' : undefined}>
                 {link.label}
               </Link>
             ))}

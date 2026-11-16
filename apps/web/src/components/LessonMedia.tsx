@@ -27,7 +27,7 @@ export function LessonMedia({ url, title }: { url: string; title: string }) {
     return <video className="aspect-video w-full rounded-2xl bg-black" src={url} controls preload="metadata" />;
   }
   return (
-    <a className="inline-flex rounded-xl bg-pine px-4 py-2 text-sm text-white" href={url} target="_blank" rel="noreferrer">
+    <a className="inline-flex rounded-xl bg-accent px-4 py-2 text-sm text-white" href={url} target="_blank" rel="noreferrer">
       Open the lesson video
     </a>
   );

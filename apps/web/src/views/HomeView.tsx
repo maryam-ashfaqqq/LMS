@@ -71,7 +71,7 @@ export function HomeView() {
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by title or topic"
-              className="h-12 flex-1 rounded-xl border border-line bg-white px-4 text-sm outline-none focus:border-pine focus:ring-4 focus:ring-pine/10"
+              className="h-12 flex-1 rounded-xl border border-line bg-cream px-4 text-sm text-ink outline-none focus:border-accent focus:ring-4 focus:ring-accent/15"
             />
             <button className={buttonClass('primary', 'lg')} type="submit">
               Search courses
@@ -134,7 +134,7 @@ export function HomeView() {
           </div>
           <Link href="/courses" className="text-sm text-pine">All courses</Link>
         </div>
-        {error ? <p className="mt-6 text-sm text-clay-deep">{error}</p> : null}
+        {error ? <p className="mt-6 text-sm text-red-700">{error}</p> : null}
         {loading ? <LoadingBlock /> : null}
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
@@ -166,7 +166,7 @@ export function HomeView() {
             const Mark = Icon as typeof CheckCircle2;
             return (
               <div key={String(title)}>
-                <Mark className="h-5 w-5 text-clay" />
+                <Mark className="h-5 w-5 text-accent" />
                 <h3 className="mt-3 font-display text-2xl">{String(title)}</h3>
                 <p className="mt-2 text-sm leading-6 text-paper/75">{String(body)}</p>
               </div>

@@ -105,9 +105,9 @@ export function DashboardShell({ children }: { children: ReactNode }) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm ${active ? 'bg-white/15 text-white' : 'text-white/75 hover:bg-white/10 hover:text-white'}`}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm ${active ? 'bg-accent text-white' : 'text-paper/80 hover:bg-white/10 hover:text-paper'}`}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className={`h-4 w-4 ${active ? 'text-white' : 'text-accent'}`} />
               {item.label}
             </Link>
           );
@@ -126,19 +126,19 @@ export function DashboardShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-paper lg:grid lg:grid-cols-[260px_1fr]">
-      <aside className="hidden bg-pine px-4 py-6 lg:block">{nav}</aside>
+      <aside className="hidden bg-pine-deep px-4 py-6 lg:block">{nav}</aside>
       <div>
         <ApiBanner />
-        <div className="flex items-center justify-between border-b border-line px-4 py-3 lg:hidden">
-          <button type="button" aria-label="Open navigation" onClick={() => setOpen(true)}>
+        <div className="flex items-center justify-between border-b border-white/10 bg-pine-deep px-4 py-3 text-paper lg:hidden">
+          <button type="button" className="text-paper" aria-label="Open navigation" onClick={() => setOpen(true)}>
             <Menu />
           </button>
-          <span className="font-display text-xl text-pine">{settings.site_name}</span>
-          <Link href={dashboardPath(user.role)} className="text-sm">Home</Link>
+          <span className="font-display text-xl text-paper">{settings.site_name}</span>
+          <Link href={dashboardPath(user.role)} className="text-sm text-paper">Home</Link>
         </div>
         {open ? (
           <div className="fixed inset-0 z-50 bg-ink/50 lg:hidden" onClick={() => setOpen(false)}>
-            <div className="h-full w-[min(20rem,86vw)] bg-pine p-4" onClick={(event) => event.stopPropagation()}>
+            <div className="h-full w-[min(20rem,86vw)] bg-pine-deep p-4" onClick={(event) => event.stopPropagation()}>
               <button type="button" className="mb-4 text-white" aria-label="Close navigation" onClick={() => setOpen(false)}>
                 <X />
               </button>

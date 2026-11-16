@@ -116,7 +116,7 @@ export function CoursesView() {
 
         <div className="mt-6">
           {loading ? <LoadingBlock label="Loading courses" /> : null}
-          {error ? <p className="text-sm text-clay-deep">{error}</p> : null}
+          {error ? <p className="text-sm text-red-700">{error}</p> : null}
           {!loading && result && result.data.length === 0 ? (
             <EmptyState
               title="No courses match these filters"

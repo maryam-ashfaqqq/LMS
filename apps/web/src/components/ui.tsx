@@ -5,8 +5,8 @@ type Variant = 'primary' | 'clay' | 'secondary' | 'ghost' | 'danger';
 type Size = 'sm' | 'md' | 'lg';
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-pine text-white hover:bg-pine-deep',
-  clay: 'bg-clay text-white hover:bg-clay-deep',
+  primary: 'bg-accent text-white hover:bg-accent-deep',
+  clay: 'bg-accent text-white hover:bg-accent-deep',
   secondary: 'border border-line bg-cream text-ink hover:bg-white',
   ghost: 'text-ink hover:bg-black/5',
   danger: 'border border-red-200 bg-white text-red-700 hover:bg-red-50',
@@ -40,7 +40,7 @@ export function TextLink({ href, children, className = '' }: { href: string; chi
 }
 
 export const fieldClass =
-  'w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/70 focus:border-pine focus:ring-4 focus:ring-pine/10';
+  'w-full rounded-xl border border-line bg-cream px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-muted/70 focus:border-accent focus:ring-4 focus:ring-accent/15';
 
 export function Field({
   label,
@@ -57,7 +57,7 @@ export function Field({
     <label className="block">
       <span className="mb-1.5 block text-sm font-medium text-ink">{label}</span>
       {children}
-      {error ? <span className="mt-1.5 block text-xs text-clay-deep">{error}</span> : null}
+      {error ? <span className="mt-1.5 block text-xs text-red-700">{error}</span> : null}
       {hint && !error ? <span className="mt-1.5 block text-xs text-muted">{hint}</span> : null}
     </label>
   );
@@ -65,8 +65,8 @@ export function Field({
 
 export function Badge({ children, tone = 'neutral' }: { children: ReactNode; tone?: 'neutral' | 'good' | 'wait' | 'bad' }) {
   const tones = {
-    neutral: 'bg-paper text-ink-soft',
-    good: 'bg-pine-mist text-pine',
+    neutral: 'bg-accent-mist text-accent',
+    good: 'bg-accent-mist text-accent',
     wait: 'bg-amber-100 text-amber-900',
     bad: 'bg-red-50 text-red-700',
   };
@@ -83,7 +83,7 @@ export function statusTone(status: string): 'neutral' | 'good' | 'wait' | 'bad' 
 export function LoadingBlock({ label = 'Loading' }: { label?: string }) {
   return (
     <div className="flex items-center gap-3 py-10 text-sm text-muted" role="status">
-      <span className="h-4 w-4 animate-spin rounded-full border-2 border-pine/20 border-t-pine" />
+      <span className="h-4 w-4 animate-spin rounded-full border-2 border-accent/20 border-t-accent" />
       {label}
     </div>
   );
