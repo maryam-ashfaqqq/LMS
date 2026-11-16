@@ -1,0 +1,31 @@
+{
+  "name": "oakline",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Oakline learning management system",
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c green,blue \"npm run dev -w @oakline/api\" \"npm run dev -w @oakline/web\"",
+    "dev:api": "npm run dev -w @oakline/api",
+    "dev:web": "npm run dev -w @oakline/web",
+    "build": "npm run build -w @oakline/api && npm run build -w @oakline/web",
+    "test": "npm run test -w @oakline/api",
+    "typecheck": "npm run typecheck -w @oakline/api && npm run typecheck -w @oakline/web",
+    "lint": "npm run lint -w @oakline/web",
+    "db:setup": "npm run db:setup -w @oakline/api",
+    "db:seed": "npm run db:seed -w @oakline/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "allowScripts": {
+    "bcrypt@5.1.1": true,
+    "esbuild@0.28.2": true
+  }
+}
