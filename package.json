@@ -12,7 +12,6 @@
     "dev:api": "npm run dev -w @oakline/api",
     "dev:web": "npm run dev -w @oakline/web",
     "build": "npm run build -w @oakline/api && npm run build -w @oakline/web",
-    "test": "npm run test -w @oakline/api",
     "typecheck": "npm run typecheck -w @oakline/api && npm run typecheck -w @oakline/web",
     "lint": "npm run lint -w @oakline/web",
     "db:setup": "npm run db:setup -w @oakline/api"

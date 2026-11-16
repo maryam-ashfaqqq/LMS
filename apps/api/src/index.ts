@@ -11,7 +11,9 @@ async function main() {
   await ensureDatabase();
   const app = createApp();
   app.listen(config.port, () => {
+    const ssl = config.db.ssl ? 'on' : 'off';
     console.log(`Oakline API listening on ${config.apiPublicUrl}`);
+    console.log(`Database ${config.db.database} at ${config.db.host}:${config.db.port} (ssl ${ssl})`);
   });
 }
 

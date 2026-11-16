@@ -70,26 +70,43 @@ export async function ensureDatabase() {
   }
 
   if (config.adminEmail && config.adminPassword) {
-    const existing = await query<RowDataPacket & { id: string }>(
-      'SELECT id FROM users WHERE email = :email LIMIT 1',
-      { email: config.adminEmail },
+    const admins = await query<RowDataPacket & { id: string; email: string }>(
+      "SELECT id, email FROM users WHERE role = 'admin' ORDER BY created_at ASC",
     );
-    if (existing.length === 0) {
-      try {
+    const current = admins.find((admin) => admin.email === config.adminEmail);
+    if (!current) {
+      const passwordHash = await hashPassword(config.adminPassword);
+      const previous = admins.find((admin) => admin.email === 'NEW_EMAIL') ?? admins[0];
+      if (previous) {
         await exec(
-          `INSERT INTO users (id, email, password_hash, first_name, last_name, role)
-           VALUES (:id, :email, :passwordHash, :firstName, :lastName, 'admin')`,
-          {
-            id: randomUUID(),
-            email: config.adminEmail,
-            passwordHash: await hashPassword(config.adminPassword),
-            firstName: 'Site',
-            lastName: 'Admin',
-          },
+          'UPDATE users SET email = :email, password_hash = :passwordHash WHERE id = :id',
+          { id: previous.id, email: config.adminEmail, passwordHash },
         );
-      } catch (error) {
-        const code = (error as { code?: string }).code;
-        if (code !== 'ER_DUP_ENTRY') throw error;
+      } else {
+        try {
+          await exec(
+            `INSERT INTO users (id, email, password_hash, first_name, last_name, role)
+             VALUES (:id, :email, :passwordHash, :firstName, :lastName, 'admin')`,
+            {
+              id: randomUUID(),
+              email: config.adminEmail,
+              passwordHash,
+              firstName: 'Site',
+              lastName: 'Admin',
+            },
+          );
+        } catch (error) {
+          const code = (error as { code?: string }).code;
+          if (code !== 'ER_DUP_ENTRY') throw error;
+        }
+      }
+    }
+    for (const leftover of ['admin@oakline.app', 'NEW_EMAIL']) {
+      if (leftover === config.adminEmail) continue;
+      try {
+        await exec("DELETE FROM users WHERE email = :email AND role = 'admin'", { email: leftover });
+      } catch {
+        // A leftover admin can remain if related rows still reference that account.
       }
     }
   }

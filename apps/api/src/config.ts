@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
-dotenv.config();
+const envPath = path.resolve(__dirname, '../.env');
+dotenv.config({ path: envPath, override: true });
 
 function requiredInProduction(name: string, value: string | undefined, fallback: string): string {
   const resolved = value && value.trim() ? value.trim() : fallback;
